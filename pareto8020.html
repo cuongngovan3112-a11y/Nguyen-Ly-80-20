@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Nguyên Lý 80/20 | Ngô Cương</title>
+<style>
+@import url('data:text/css,');
+/* Font system fallback for offline Electron */
+</style>
+<style>
+/* ===== RESET & BASE ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* === PREMIUM DARK-NAVY + GOLD THEME === */
+  --accent:#7c6ff7;--accent-light:rgba(124,111,247,.15);--accent-dark:#5b52d0;
+  --gold:#f5a623;--gold-dark:#d4891c;--gold-light:rgba(245,166,35,.15);
+  --red:#ff5a7d;--red-light:rgba(255,90,125,.12);
+  --green:#34d399;--green-light:rgba(52,211,153,.12);
+  --yellow:#fbbf24;--yellow-light:rgba(251,191,36,.1);
+  --bg:#0d1117;--bg2:#161b22;--bg3:#1e2530;
+  --surface:#1a2133;--surface2:#232d3f;--border:rgba(255,255,255,.08);
+  --text:#f0f4ff;--muted:#8899aa;--sub:#556070;
+  --radius:14px;
+  --shadow:0 8px 32px rgba(0,0,0,.4),0 2px 8px rgba(0,0,0,.3);
+  --shadow-accent:0 8px 24px rgba(124,111,247,.25);
+  --transition:.28s cubic-bezier(.4,0,.2,1);
+}
+body{font-family:-apple-system,'Segoe UI','SF Pro Display',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;background-image:radial-gradient(ellipse at 20% 0%,rgba(124,111,247,.08) 0%,transparent 60%),radial-gradient(ellipse at 80% 100%,rgba(245,166,35,.05) 0%,transparent 60%)}
+h1,h2,h3,h4{line-height:1.25;font-weight:700}
+button{cursor:pointer;border:none;outline:none;font-family:inherit}
+input,textarea{font-family:inherit;outline:none}
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:rgba(124,111,247,.4);border-radius:99px}::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+
+/* ===== NAV ===== */
+.topbar{position:sticky;top:0;z-index:100;background:rgba(13,17,23,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 24px}
+.topbar-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:6px;height:58px;overflow-x:auto;scrollbar-width:none}
+.topbar-inner::-webkit-scrollbar{display:none}
+.nav-btn{flex-shrink:0;padding:7px 15px;border-radius:99px;font-size:.8rem;font-weight:600;background:transparent;color:var(--muted);transition:var(--transition);letter-spacing:.01em}
+.nav-btn:hover{background:var(--accent-light);color:var(--accent)}
+.nav-btn.active{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;box-shadow:var(--shadow-accent)}
+
+/* ===== LAYOUT ===== */
+.main{max-width:960px;margin:0 auto;padding:40px 20px 80px}
+.section{display:none;animation:fadeIn .3s ease}
+.section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== CARD ===== */
+.card{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow);padding:28px;margin-bottom:20px;transition:var(--transition);position:relative}
+.card::after{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:transparent;border-radius:4px 0 0 4px;transition:var(--transition)}
+.card:hover{box-shadow:var(--shadow),0 0 0 1px rgba(124,111,247,.2)}
+.card:hover::after{background:var(--accent)}
+.card-sm{padding:18px 22px}
+
+/* ===== PAGE HEADER ===== */
+.page-header{margin-bottom:28px}
+.page-header h2{font-size:1.5rem;margin-bottom:6px;font-weight:800;letter-spacing:-.02em}
+.page-header p{color:var(--muted);font-size:.92rem;max-width:520px;line-height:1.7}
+
+/* ===== BADGES ===== */
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:99px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.badge-20{background:var(--green-light);color:var(--green);border:1px solid rgba(52,211,153,.3)}
+.badge-80{background:var(--red-light);color:var(--red);border:1px solid rgba(255,90,125,.3)}
+.badge-accent{background:var(--accent-light);color:var(--accent);border:1px solid rgba(124,111,247,.3)}
+
+/* ===== BUTTONS ===== */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:11px 22px;border-radius:99px;font-size:.88rem;font-weight:700;transition:var(--transition);letter-spacing:.02em}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;box-shadow:var(--shadow-accent)}.btn-primary:hover{opacity:.9;box-shadow:0 12px 28px rgba(124,111,247,.4)}
+.btn-outline{background:transparent;color:var(--accent);border:1.5px solid rgba(124,111,247,.5)}.btn-outline:hover{background:var(--accent-light);border-color:var(--accent)}
+.btn-ghost{background:transparent;color:var(--muted);border:1.5px solid var(--border)}.btn-ghost:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-light)}
+.btn-sm{padding:8px 16px;font-size:.8rem}
+
+/* ===== INPUT ===== */
+.input-row{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+.inp{flex:1;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:.9rem;color:var(--text);background:var(--bg2);transition:var(--transition);font-weight:500}
+.inp:focus{border-color:var(--accent);background:var(--bg3);box-shadow:0 0 0 3px var(--accent-light);outline:none}
+.inp::placeholder{color:var(--sub)}
+.inp-label{font-size:.75rem;color:var(--muted);font-weight:700;min-width:72px;text-transform:uppercase;letter-spacing:.04em}
+
+/* ===== SECTION 1: CORE INSIGHTS ===== */
+.big-rule{font-size:2.8rem;font-weight:800;letter-spacing:-.04em;background:linear-gradient(135deg,var(--accent),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.rule-sub{font-size:1rem;color:var(--muted);margin-top:6px;max-width:480px;line-height:1.7}
+.split-bar{display:flex;height:14px;border-radius:99px;overflow:hidden;margin:20px 0;background:var(--bg2)}
+.split-bar .s80{flex:8;background:var(--red-light);border-right:2px solid rgba(255,90,125,.3)}
+.split-bar .s20{flex:2;background:linear-gradient(90deg,var(--accent),var(--gold));position:relative}
+.split-bar .s20::after{content:"";position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);animation:shimmer 2.5s infinite}
+@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.examples-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:12px}
+.ex-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px;transition:var(--transition)}
+.ex-card:hover{border-color:rgba(124,111,247,.3);background:var(--bg3)}
+.ex-card h4{font-size:.78rem;margin-bottom:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;font-weight:700}
+.ex-row{display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;font-size:.85rem;color:var(--text)}
+.ex-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.dot-green{background:var(--green)}.dot-red{background:var(--red)}
+
+/* ===== SECTION 2: DIAGNOSTIC ===== */
+.diag-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:600px){.diag-cols{grid-template-columns:1fr}}
+.col-header{display:flex;align-items:center;gap:8px;margin-bottom:14px;padding:10px 14px;background:var(--bg2);border-radius:10px;border:1px solid var(--border)}
+.col-header span{font-weight:700;font-size:.9rem;color:var(--text)}
+.diag-result{margin-top:24px;display:none}
+.diag-result.show{display:block;animation:fadeIn .4s ease}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+@media(max-width:600px){.result-grid{grid-template-columns:1fr}}
+.result-col{border-radius:var(--radius);padding:20px;border:1px solid var(--border)}
+.result-col.top20{background:rgba(52,211,153,.06);border-color:rgba(52,211,153,.3)}
+.result-col.drop80{background:rgba(255,90,125,.06);border-color:rgba(255,90,125,.3)}
+.result-col h4{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px}
+.result-col.top20 h4{color:var(--green)}
+.result-col.drop80 h4{color:var(--red)}
+.result-item{display:flex;gap:8px;align-items:flex-start;font-size:.85rem;margin-bottom:8px;padding:10px 12px;background:rgba(255,255,255,.04);border-radius:8px;border:1px solid var(--border)}
+
+/* ===== SECTION 3: HIGH IMPACT ===== */
+.action-item{display:flex;gap:14px;align-items:flex-start;padding:16px 18px;border:1px solid var(--border);border-radius:12px;margin-bottom:10px;transition:var(--transition);cursor:pointer;background:var(--bg2)}
+.action-item:hover{border-color:rgba(124,111,247,.4);background:var(--surface)}
+.action-item.done{opacity:.4}
+.action-item.done .action-text h4{text-decoration:line-through}
+.action-cb{width:22px;height:22px;border:2px solid rgba(124,111,247,.5);border-radius:6px;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:var(--transition);background:transparent}
+.action-item.done .action-cb{background:var(--accent);border-color:var(--accent)}
+.action-text h4{font-size:.9rem;font-weight:700;margin-bottom:3px;color:var(--text)}
+.action-text p{font-size:.8rem;color:var(--muted);line-height:1.6}
+.timer-tag{display:inline-flex;align-items:center;gap:5px;font-size:.72rem;color:var(--gold);font-weight:600;margin-top:5px}
+
+/* ===== SECTION 4: DECISION ===== */
+.scenario-card{background:var(--surface);border:1px solid rgba(124,111,247,.25);border-radius:var(--radius);padding:24px;margin-bottom:20px}
+.scenario-card h3{font-size:1rem;color:var(--text);margin-bottom:18px;font-weight:700;line-height:1.5}
+.choice-list{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.choice-btn{text-align:left;padding:13px 16px;border-radius:10px;font-size:.88rem;font-weight:500;background:var(--bg2);border:1px solid var(--border);color:var(--text);transition:var(--transition)}
+.choice-btn:hover:not(:disabled){background:var(--accent-light);border-color:rgba(124,111,247,.4);color:var(--accent)}
+.choice-btn.correct{background:rgba(52,211,153,.1)!important;border-color:rgba(52,211,153,.5)!important;color:var(--green)!important}
+.choice-btn.wrong{background:rgba(255,90,125,.1)!important;border-color:rgba(255,90,125,.5)!important;color:var(--red)!important}
+.choice-btn.neutral{background:var(--bg2)!important;border-color:var(--border)!important;color:var(--sub)!important}
+.feedback-box{border-radius:10px;padding:14px 16px;font-size:.87rem;display:none;margin-bottom:12px;line-height:1.6}
+.feedback-box.show{display:block;animation:fadeIn .3s ease}
+.feedback-box.ok{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.3);color:var(--green)}
+.feedback-box.no{background:rgba(255,90,125,.08);border:1px solid rgba(255,90,125,.3);color:var(--red)}
+.dec-score{display:flex;gap:12px;margin-bottom:24px}
+.dec-score .sc{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 22px;text-align:center;flex:1}
+.dec-score .sc .num{font-size:1.8rem;font-weight:800}
+.dec-score .sc .lbl{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+
+/* ===== SECTION 5: QUIZ ===== */
+.quiz-prog{height:4px;background:var(--bg3);border-radius:99px;margin-bottom:24px;overflow:hidden}
+.quiz-prog-bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));border-radius:99px;transition:width .5s ease}
+.quiz-q{font-size:1rem;font-weight:700;margin-bottom:20px;line-height:1.65;color:var(--text)}
+.quiz-opts{display:flex;flex-direction:column;gap:10px}
+.quiz-opt{text-align:left;padding:13px 16px;border-radius:10px;font-size:.88rem;font-weight:500;background:var(--bg2);border:1px solid var(--border);color:var(--text);transition:var(--transition)}
+.quiz-opt:hover:not(:disabled){border-color:rgba(124,111,247,.4);background:var(--accent-light);color:var(--accent)}
+.quiz-opt.correct{background:rgba(52,211,153,.1);border-color:rgba(52,211,153,.5);color:var(--green)}
+.quiz-opt.wrong{background:rgba(255,90,125,.1);border-color:rgba(255,90,125,.5);color:var(--red)}
+.quiz-opt.reveal{background:var(--bg2);border-color:var(--border);color:var(--sub)}
+.quiz-explain{border-radius:10px;padding:14px 16px;font-size:.87rem;background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.3);color:var(--green);display:none;margin-top:14px;line-height:1.7}
+.quiz-explain.show{display:block;animation:fadeIn .3s ease}
+.quiz-counter{font-size:.78rem;color:var(--muted);margin-bottom:8px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.quiz-result{text-align:center;padding:40px 0}
+.quiz-result .big{font-size:3.5rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.quiz-result p{color:var(--muted);margin-top:10px;font-size:.95rem}
+
+/* ===== SECTION 6: FLASHCARDS ===== */
+.fc-wrapper{perspective:1200px;max-width:500px;margin:0 auto 28px}
+.fc{width:100%;height:230px;position:relative;transform-style:preserve-3d;transition:transform .6s cubic-bezier(.4,0,.2,1);cursor:pointer}
+.fc.flipped{transform:rotateY(180deg)}
+.fc-face{position:absolute;inset:0;border-radius:var(--radius);padding:32px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1px solid var(--border)}
+.fc-front{background:var(--surface);box-shadow:var(--shadow)}
+.fc-back{background:linear-gradient(135deg,var(--accent-dark),#3a2080);color:#fff;transform:rotateY(180deg);border-color:rgba(124,111,247,.3)}
+.fc-front .label{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--sub);font-weight:700;margin-bottom:12px}
+.fc-front .situation{font-size:.98rem;font-weight:600;color:var(--text);line-height:1.6}
+.fc-back .decision{font-size:1rem;font-weight:700;margin-bottom:10px;color:#fff}
+.fc-back .reason{font-size:.83rem;opacity:.8;line-height:1.6}
+.fc-hint{text-align:center;font-size:.78rem;color:var(--sub);margin-bottom:16px}
+.fc-nav{display:flex;justify-content:center;align-items:center;gap:16px}
+.fc-count{font-size:.85rem;color:var(--muted);font-weight:600;min-width:60px;text-align:center}
+
+/* ===== SECTION 7: MISTAKES ===== */
+.mistake-card{border-left:3px solid var(--red);padding-left:18px;margin-bottom:24px;padding-top:4px}
+.mistake-card h3{font-size:.95rem;font-weight:700;margin-bottom:6px;color:var(--red)}
+.mistake-card .desc{font-size:.87rem;color:var(--muted);margin-bottom:10px;line-height:1.7}
+.mistake-card .fix{background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.3);border-radius:8px;padding:12px 14px;font-size:.85rem;color:var(--green);font-weight:500;line-height:1.7}
+.mistake-card .fix::before{content:"✓ Cách sửa: ";font-weight:700}
+
+/* ===== SECTION 8: DAILY FOCUS ===== */
+.today-big{font-size:1.05rem;font-weight:700;color:var(--text);padding:18px 20px;background:linear-gradient(135deg,rgba(124,111,247,.08),rgba(124,111,247,.04));border-radius:var(--radius);border:1px solid rgba(124,111,247,.25);margin-bottom:16px;min-height:64px;line-height:1.6}
+.today-big.empty{color:var(--sub);font-weight:400;font-style:italic}
+.drop-list{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.drop-item{display:flex;gap:8px;align-items:center;padding:10px 14px;background:rgba(255,90,125,.07);border:1px solid rgba(255,90,125,.2);border-radius:8px;font-size:.86rem;color:var(--red)}
+.drop-item.empty{background:var(--bg2);color:var(--sub);font-style:italic;border-color:var(--border)}
+.check-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.3);border-radius:99px;padding:8px 18px;font-size:.86rem;font-weight:700;color:var(--gold);margin-top:16px}
+.ratio-visual{display:flex;flex-direction:column;gap:8px;margin-top:20px}
+.ratio-row{display:flex;align-items:center;gap:12px;font-size:.82rem;font-weight:600}
+.ratio-bar{height:10px;border-radius:99px}
+.r80{background:rgba(255,90,125,.2);border:1px solid rgba(255,90,125,.3)}
+.r20{background:linear-gradient(90deg,var(--accent),var(--gold))}
+.ratio-label{min-width:32px;text-align:right;color:var(--muted)}
+
+/* ===== MISC ===== */
+.divider{height:1px;background:var(--border);margin:20px 0}
+.tag-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.info-box{background:rgba(245,166,35,.08);border:1px solid rgba(245,166,35,.25);border-radius:10px;padding:14px 16px;font-size:.86rem;color:var(--gold);margin-bottom:16px}
+.section-intro{color:var(--muted);font-size:.9rem;margin-bottom:24px;line-height:1.7;max-width:560px}
+@media(max-width:600px){.big-rule{font-size:2rem}.main{padding:24px 14px 60px}}
+</style>
+</head>
+<body>
+
+<!-- ===== TOPBAR NAV ===== -->
+<nav class="topbar">
+  <div class="topbar-inner" id="topbarInner">
+    <button class="nav-btn active" data-sec="insights">💡 Core Insights</button>
+    <button class="nav-btn" data-sec="diagnostic">🔍 Chẩn Đoán</button>
+    <button class="nav-btn" data-sec="actions">⚡ High-Impact</button>
+    <button class="nav-btn" data-sec="decision">🎯 Quyết Định</button>
+    <button class="nav-btn" data-sec="quiz">📝 Quiz</button>
+    <button class="nav-btn" data-sec="flashcard">🃏 Flashcard</button>
+    <button class="nav-btn" data-sec="mistakes">⚠️ Sai Lầm</button>
+    <button class="nav-btn" data-sec="daily">📅 Daily Focus</button>
+  </div>
+</nav>
+
+<main class="main">
+
+<!-- ===================================== -->
+<!-- SECTION 1: CORE INSIGHTS             -->
+<!-- ===================================== -->
+<section class="section active" id="sec-insights">
+  <div class="page-header">
+    <div class="big-rule">Nguyên lý 80/20</div>
+    <div class="rule-sub">20% nỗ lực tạo ra 80% kết quả.<br>Câu hỏi duy nhất cần hỏi: <em>"Đây là 20% hay 80%?"</em></div>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:16px">
+      <span class="badge badge-accent">Vilfredo Pareto · 1896</span>
+    </div>
+    <p style="font-size:.95rem;line-height:1.85;color:var(--muted)">
+      Nhà kinh tế học Ý Vilfredo Pareto nhận ra <strong style="color:var(--text);font-weight:700">80% đất đai nước Ý</strong> thuộc sở hữu của <strong style="color:var(--text);font-weight:700">20% dân số</strong>.
+      Sau đó ông phát hiện quy luật này xuất hiện ở khắp nơi — trong kinh doanh, thiên nhiên, xã hội.
+      Richard Koch đặt tên là <strong style="color:var(--accent)">Nguyên lý Pareto</strong> và áp dụng vào năng suất cá nhân.
+    </p>
+    <div class="split-bar"><div class="s80"></div><div class="s20"></div></div>
+    <div style="display:flex;justify-content:space-between;font-size:.78rem;font-weight:700;margin-top:4px">
+      <span style="color:var(--red)">80% việc → ít kết quả</span>
+      <span style="color:var(--green)">20% việc → phần lớn kết quả ✨</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-bottom:16px;font-size:1rem">Ví dụ thực tế</h3>
+    <div class="examples-grid">
+      <!-- Công việc -->
+      <div class="ex-card">
+        <h4>💼 Công việc</h4>
+        <div class="ex-row"><div class="ex-dot dot-green"></div><div>2/10 dự án mang lại 80% doanh thu <span class="badge badge-20" style="font-size:.68rem">20%</span></div></div>
+        <div class="ex-row"><div class="ex-dot dot-red"></div><div>8 cuộc họp/tuần không tạo ra quyết định <span class="badge badge-80" style="font-size:.68rem">80%</span></div></div>
+        <div class="ex-row"><div class="ex-dot dot-red"></div><div>Kiểm tra email 30 lần/ngày <span class="badge badge-80" style="font-size:.68rem">80%</span></div></div>
+      </div>
+      <!-- Tiền bạc -->
+      <div class="ex-card">
+        <h4>💰 Tiền bạc</h4>
+        <div class="ex-row"><div class="ex-dot dot-green"></div><div>1 nguồn thu nhập chính tạo 80% tiền <span class="badge badge-20" style="font-size:.68rem">20%</span></div></div>
+        <div class="ex-row"><div class="ex-dot dot-red"></div><div>Chi tiêu nhỏ hàng ngày ngốn 80% ngân sách <span class="badge badge-80" style="font-size:.68rem">80%</span></div></div>
+        <div class="ex-row"><div class="ex-dot dot-green"></div><div>3 kỹ năng cốt lõi quyết định mức lương <span class="badge badge-20" style="font-size:.68rem">20%</span></div></div>
+      </div>
+      <!-- Quan hệ -->
+      <div class="ex-card">
+        <h4>🤝 Quan hệ</h4>
+        <div class="ex-row"><div class="ex-dot dot-green"></div><div>3-5 người thực sự quan trọng trong cuộc đời <span class="badge badge-20" style="font-size:.68rem">20%</span></div></div>
+        <div class="ex-row"><div class="ex-dot dot-red"></div><div>80% người quen không ảnh hưởng đến cuộc sống <span class="badge badge-80" style="font-size:.68rem">80%</span></div></div>
+        <div class="ex-row"><div class="ex-dot dot-green"></div><div>1 mentor đúng > 10 khóa học online <span class="badge badge-20" style="font-size:.68rem">20%</span></div></div>
+      </div>
+      <!-- Học tập -->
+      <div class="ex-card">
+        <h4>📚 Học tập</h4>
+        <div class="ex-row"><div class="ex-dot dot-green"></div><div>20% nội dung cốt lõi = 80% kiến thức thực dụng <span class="badge badge-20" style="font-size:.68rem">20%</span></div></div>
+        <div class="ex-row"><div class="ex-dot dot-red"></div><div>Tô màu sách, ghi chép đẹp nhưng không nhớ <span class="badge badge-80" style="font-size:.68rem">80%</span></div></div>
+        <div class="ex-row"><div class="ex-dot dot-green"></div><div>Luyện tập chủ động > đọc thụ động <span class="badge badge-20" style="font-size:.68rem">20%</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="background:linear-gradient(135deg,#0d0a1a 0%,#1a0e3d 50%,#0d1730 100%);color:#fff;border:1px solid rgba(124,111,247,.3);box-shadow:0 20px 60px -10px rgba(124,111,247,.3)">
+    <h3 style="color:var(--gold);margin-bottom:14px;font-size:.85rem;text-transform:uppercase;letter-spacing:.12em;display:flex;align-items:center;gap:8px"><span style="font-size:1.1rem">✨</span> Câu hỏi vàng 80/20</h3>
+    <p style="font-size:1.2rem;font-weight:700;line-height:1.7;color:#eef">
+      "Trong tất cả những việc tôi có thể làm lúc này,<br>
+      <span style="color:var(--gold);background:rgba(245,166,35,.12);padding:3px 10px;border-radius:6px;display:inline-block;margin-top:4px">điều gì tạo ra kết quả lớn nhất?</span>"
+    </p>
+    <div class="divider" style="border-color:rgba(255,255,255,.06);margin:18px 0"></div>
+    <p style="font-size:.88rem;color:#9aabb8;font-weight:500">Hỏi câu này mỗi sáng. Câu trả lời đó là <strong style="color:var(--gold)">20%</strong> của bạn.</p>
+  </div>
+</section>
+
+<!-- ===================================== -->
+<!-- SECTION 2: DIAGNOSTIC                -->
+<!-- ===================================== -->
+<section class="section" id="sec-diagnostic">
+  <div class="page-header">
+    <h2>🔍 Chẩn Đoán 80/20</h2>
+    <p>Nhập các việc bạn đang làm và mục tiêu của bạn. App sẽ phân loại đâu là 20% cần giữ, đâu là 80% nên bỏ.</p>
+  </div>
+
+  <div class="card">
+    <div class="diag-cols">
+      <!-- Cột việc đang làm -->
+      <div>
+        <div class="col-header">
+          <span class="badge badge-80">80%?</span>
+          <span>5 việc đang làm</span>
+        </div>
+        <div id="taskInputs">
+          <div class="input-row"><span class="inp-label">Việc 1</span><input class="inp" id="t1" placeholder="VD: Kiểm tra email liên tục"/></div>
+          <div class="input-row"><span class="inp-label">Việc 2</span><input class="inp" id="t2" placeholder="VD: Họp team hàng ngày"/></div>
+          <div class="input-row"><span class="inp-label">Việc 3</span><input class="inp" id="t3" placeholder="VD: Viết báo cáo chi tiết"/></div>
+          <div class="input-row"><span class="inp-label">Việc 4</span><input class="inp" id="t4" placeholder="VD: Lướt mạng xã hội"/></div>
+          <div class="input-row"><span class="inp-label">Việc 5</span><input class="inp" id="t5" placeholder="VD: Trả lời tin nhắn ngay lập tức"/></div>
+        </div>
+      </div>
+      <!-- Cột mục tiêu -->
+      <div>
+        <div class="col-header">
+          <span class="badge badge-20">20%!</span>
+          <span>5 mục tiêu quan trọng</span>
+        </div>
+        <div id="goalInputs">
+          <div class="input-row"><span class="inp-label">Mục tiêu 1</span><input class="inp" id="g1" placeholder="VD: Tăng doanh thu 30%"/></div>
+          <div class="input-row"><span class="inp-label">Mục tiêu 2</span><input class="inp" id="g2" placeholder="VD: Hoàn thành khóa học"/></div>
+          <div class="input-row"><span class="inp-label">Mục tiêu 3</span><input class="inp" id="g3" placeholder="VD: Sức khỏe tốt hơn"/></div>
+          <div class="input-row"><span class="inp-label">Mục tiêu 4</span><input class="inp" id="g4" placeholder="VD: Xây dựng mối quan hệ"/></div>
+          <div class="input-row"><span class="inp-label">Mục tiêu 5</span><input class="inp" id="g5" placeholder="VD: Tiết kiệm đầu tư"/></div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:20px;display:flex;gap:10px">
+      <button class="btn btn-primary" onclick="runDiagnostic()">⚡ Phân tích ngay</button>
+      <button class="btn btn-ghost btn-sm" onclick="clearDiagnostic()">Xóa</button>
+    </div>
+  </div>
+
+  <!-- Kết quả -->
+  <div class="diag-result" id="diagResult">
+    <div class="info-box">⚡ Dựa trên mối liên kết giữa việc làm và mục tiêu, hệ thống phân loại theo nguyên lý 80/20.</div>
+    <div class="result-grid">
+      <div class="result-col top20">
+        <h4>✅ Đây là 20% — GIỮ & ĐẦU TƯ</h4>
+        <div id="keep20"></div>
+        <p style="font-size:.78rem;color:var(--green);margin-top:10px;font-weight:600">→ Đây là những việc trực tiếp tạo ra kết quả cho mục tiêu của bạn.</p>
+      </div>
+      <div class="result-col drop80">
+        <h4>🗑️ Đây là 80% — CẮT GIẢM / BỎ</h4>
+        <div id="drop80"></div>
+        <p style="font-size:.78rem;color:var(--red);margin-top:10px;font-weight:600">→ Những việc này tốn thời gian nhưng ít đóng góp cho mục tiêu thực sự.</p>
+      </div>
+    </div>
+    <div class="card card-sm" style="margin-top:16px;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:#86efac">
+      <h4 style="color:var(--green);font-size:.9rem;margin-bottom:8px">💡 Gợi ý hành động ngay</h4>
+      <div id="diagAction" style="font-size:.88rem;line-height:1.7;color:#166534"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================== -->
+<!-- SECTION 3: HIGH-IMPACT ACTIONS       -->
+<!-- ===================================== -->
+<section class="section" id="sec-actions">
+  <div class="page-header">
+    <h2>⚡ High-Impact Actions</h2>
+    <p>5 hành động cốt lõi — mỗi hành động ≤ 5 phút để bắt đầu. Đây là 20% hành động tạo ra 80% thay đổi.</p>
+  </div>
+
+  <div class="card">
+    <div id="actionList"></div>
+    <div class="divider"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span id="actionProgress" style="font-size:.88rem;color:var(--muted);font-weight:600"></span>
+      <button class="btn btn-ghost btn-sm" onclick="resetActions()">↺ Reset</button>
+    </div>
+  </div>
+
+  <div class="card" style="background:rgba(251,191,36,.05);border-color:rgba(251,191,36,.2)">
+    <h4 style="color:var(--gold);margin-bottom:8px;font-size:.85rem;font-weight:700">⏰ Quy tắc 2 phút của 80/20</h4>
+    <p style="font-size:.87rem;color:var(--muted);line-height:1.75">
+      Nếu một việc mất < 2 phút và liên quan đến mục tiêu chính → <strong style="color:var(--gold)">làm ngay.</strong><br>
+      Nếu mất > 2 phút nhưng không liên quan đến mục tiêu → <strong style="color:var(--red)">từ chối hoặc ủy quyền.</strong>
+    </p>
+  </div>
+</section>
+
+<!-- ===================================== -->
+<!-- SECTION 4: DECISION TRAINING         -->
+<!-- ===================================== -->
+<section class="section" id="sec-decision">
+  <div class="page-header">
+    <h2>🎯 Luyện Quyết Định</h2>
+    <p>Chọn hành động đúng theo 80/20. Nhận phản hồi ngay lập tức.</p>
+  </div>
+
+  <div class="dec-score">
+    <div class="sc"><div class="num" id="decCorrect" style="color:var(--green)">0</div><div class="lbl">Đúng</div></div>
+    <div class="sc"><div class="num" id="decWrong" style="color:var(--red)">0</div><div class="lbl">Sai</div></div>
+    <div class="sc"><div class="num" id="decTotal">0</div><div class="lbl">Tổng</div></div>
+  </div>
+
+  <div id="decContainer"></div>
+  <button class="btn btn-primary" id="decNextBtn" style="display:none" onclick="loadNextScenario()">Tình huống tiếp theo →</button>
+</section>
+
+<!-- ===================================== -->
+<!-- SECTION 5: QUIZ                      -->
+<!-- ===================================== -->
+<section class="section" id="sec-quiz">
+  <div class="page-header">
+    <h2>📝 Quiz 80/20</h2>
+    <p>Trắc nghiệm kiểm tra hiểu biết nguyên lý Pareto. Mỗi câu có giải thích rõ "tại sao là 20% hay 80%".</p>
+  </div>
+
+  <div class="card" id="quizCard">
+    <div class="quiz-counter" id="quizCounter"></div>
+    <div class="quiz-prog"><div class="quiz-prog-bar" id="quizBar"></div></div>
+    <div class="quiz-q" id="quizQ"></div>
+    <div class="quiz-opts" id="quizOpts"></div>
+    <div class="quiz-explain" id="quizExplain"></div>
+    <div style="display:flex;justify-content:flex-end;margin-top:16px">
+      <button class="btn btn-primary" id="quizNextBtn" style="display:none" onclick="nextQuiz()">Câu tiếp →</button>
+    </div>
+    <div class="quiz-result" id="quizResult" style="display:none">
+      <div class="big" id="quizScore"></div>
+      <p id="quizMsg"></p>
+      <button class="btn btn-primary" style="margin-top:20px" onclick="restartQuiz()">Làm lại</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================== -->
+<!-- SECTION 6: FLASHCARDS                -->
+<!-- ===================================== -->
+<section class="section" id="sec-flashcard">
+  <div class="page-header">
+    <h2>🃏 Flashcard 80/20</h2>
+    <p>Nhấn vào thẻ để lật — xem quyết định đúng theo nguyên lý 80/20.</p>
+  </div>
+
+  <div class="fc-hint">👆 Nhấn thẻ để lật · <span id="fcCount">1/10</span></div>
+
+  <div class="fc-wrapper">
+    <div class="fc" id="fcCard" onclick="flipCard()">
+      <div class="fc-face fc-front">
+        <div class="label">📋 Tình huống</div>
+        <div class="situation" id="fcFront"></div>
+      </div>
+      <div class="fc-face fc-back">
+        <div class="decision" id="fcBack"></div>
+        <div class="reason" id="fcReason"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fc-nav">
+    <button class="btn btn-ghost btn-sm" onclick="prevCard()">← Trước</button>
+    <span class="fc-count" id="fcNum"></span>
+    <button class="btn btn-primary btn-sm" onclick="nextCard()">Tiếp →</button>
+  </div>
+</section>
+
+<!-- ===================================== -->
+<!-- SECTION 7: MISTAKES                  -->
+<!-- ===================================== -->
+<section class="section" id="sec-mistakes">
+  <div class="page-header">
+    <h2>⚠️ Sai Lầm Phổ Biến</h2>
+    <p>7 bẫy tư duy khiến bạn mắc kẹt trong vòng 80% — bận rộn nhưng không hiệu quả.</p>
+  </div>
+  <div class="card" id="mistakesContainer"></div>
+</section>
+
+<!-- ===================================== -->
+<!-- SECTION 8: DAILY FOCUS               -->
+<!-- ===================================== -->
+<section class="section" id="sec-daily">
+  <div class="page-header">
+    <h2>📅 Daily Focus</h2>
+    <p>1 việc quan trọng nhất hôm nay (20%) và 3 việc nên loại bỏ (80%).</p>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <h3 style="font-size:.95rem">🎯 1 Việc Quan Trọng Nhất Hôm Nay <span class="badge badge-20">20%</span></h3>
+      <button class="btn btn-ghost btn-sm" onclick="clearDaily()">↺ Xóa</button>
+    </div>
+    <input class="inp" id="topTask" placeholder="Việc duy nhất tôi PHẢI hoàn thành hôm nay..." oninput="saveDaily()" style="margin-bottom:12px;font-size:1rem;font-weight:600"/>
+    <div class="today-big empty" id="topTaskPreview">Chưa có việc quan trọng nào...</div>
+
+    <div class="divider"></div>
+
+    <h3 style="font-size:.95rem;margin-bottom:12px">🗑️ 3 Việc Nên Loại Bỏ Hôm Nay <span class="badge badge-80">80%</span></h3>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
+      <input class="inp" id="drop1" placeholder="Việc lãng phí thời gian 1..." oninput="saveDaily()"/>
+      <input class="inp" id="drop2" placeholder="Việc lãng phí thời gian 2..." oninput="saveDaily()"/>
+      <input class="inp" id="drop3" placeholder="Việc lãng phí thời gian 3..." oninput="saveDaily()"/>
+    </div>
+
+    <div class="drop-list" id="dropPreview"></div>
+
+    <div class="check-tag" id="checkTag">
+      ⚡ Bạn đang làm 20% hay 80%?
+    </div>
+
+    <div class="ratio-visual" style="margin-top:20px">
+      <div class="ratio-row">
+        <span class="ratio-label" style="color:var(--red);font-size:.8rem">80%</span>
+        <div class="ratio-bar r80" style="width:80%;flex:none"></div>
+        <span style="font-size:.78rem;color:var(--red)">Ít kết quả</span>
+      </div>
+      <div class="ratio-row">
+        <span class="ratio-label" style="color:var(--green);font-size:.8rem">20%</span>
+        <div class="ratio-bar r20" style="width:20%;flex:none"></div>
+        <span style="font-size:.78rem;color:var(--green)">80% kết quả</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-sm" style="background:linear-gradient(135deg,#0f172a,#1e3a8a);color:#fff;border:none">
+    <h4 style="color:#93c5fd;margin-bottom:8px;font-size:.85rem">📌 Nhắc nhở cuối ngày</h4>
+    <p style="font-size:.88rem;line-height:1.7;color:#e0e7ff">
+      Trước khi kết thúc ngày, hỏi: <strong style="color:#60a5fa">"Tôi đã làm gì thuộc 20% quan trọng?"</strong><br>
+      Nếu câu trả lời là <em>không có gì</em> — hãy thiết kế lại ngày mai.
+    </p>
+  </div>
+</section>
+
+</main>
+
+<script>
+/* ======================================== */
+/* DATA                                     */
+/* ======================================== */
+
+// --- Actions ---
+const ACTIONS = [
+  { id:'a1', title:'Liệt kê 5 việc quan trọng nhất tuần này', note:'Dùng giấy hoặc bất kỳ ứng dụng ghi chú nào. Không cần hoàn hảo.', tag:'20%', time:'3 phút' },
+  { id:'a2', title:'Xóa 3 ứng dụng mạng xã hội khỏi màn hình chính', note:'Không xóa tài khoản — chỉ di chuyển để giảm xung đột bốc đồng.', tag:'20%', time:'2 phút' },
+  { id:'a3', title:'Chặn 2 giờ "deep work" trong lịch ngày mai', note:'Đặt tên: "KHÔNG NGẮT QUÃNG". Đây là thời gian 20% của bạn.', tag:'20%', time:'1 phút' },
+  { id:'a4', title:'Viết 1 câu: Mục tiêu số 1 của tôi trong 90 ngày tới là...', note:'1 câu, không nhiều hơn. Tính cụ thể và đo được.', tag:'20%', time:'5 phút' },
+  { id:'a5', title:'Từ chối 1 yêu cầu không cần thiết hôm nay', note:'Nói "Xin lỗi, tôi đang tập trung vào [ưu tiên X]". Thực hành từ chối.', tag:'20%', time:'1 phút' }
+];
+
+// --- Decision scenarios ---
+const SCENARIOS = [
+  {
+    q:'Bạn có 4 giờ tự do. Bạn chọn?',
+    choices:[
+      { text:'Trả lời tất cả email tồn đọng (47 cái)', correct:false, explain:'Đây là 80% — tạo cảm giác bận rộn nhưng không đưa bạn gần hơn đến mục tiêu.' },
+      { text:'Làm 1 nhiệm vụ core trong dự án quan trọng nhất', correct:true, explain:'Đây là 20% — 1 block thời gian tập trung tạo ra nhiều giá trị hơn cả ngày xử lý email.' },
+      { text:'Dọn dẹp bàn làm việc và sắp xếp tài liệu', correct:false, explain:'Đây là 80% — chuẩn bị môi trường không phải là làm việc thực sự.' },
+      { text:'Tham dự cuộc họp tự nguyện của phòng ban khác', correct:false, explain:'Đây là 80% — họp không liên quan trực tiếp đến mục tiêu của bạn.' }
+    ]
+  },
+  {
+    q:'Một người đồng nghiệp nhờ bạn giúp làm slide PowerPoint cho dự án của họ. Bạn chọn?',
+    choices:[
+      { text:'Giúp ngay vì cần duy trì quan hệ tốt', correct:false, explain:'Đây là 80% — thiện chí tốt nhưng lấy đi thời gian 20% của bạn.' },
+      { text:'Từ chối lịch sự, gợi ý họ tự làm hoặc nhờ người khác', correct:true, explain:'Đây là 20% — bảo vệ thời gian của bạn = bảo vệ kết quả của bạn.' },
+      { text:'Đồng ý nhưng không có thời hạn cụ thể', correct:false, explain:'Đây là 80% — cam kết mơ hồ gây stress và không kiểm soát được.' },
+      { text:'Làm ngay để xong sớm', correct:false, explain:'Đây là 80% — urgent của người khác không phải important của bạn.' }
+    ]
+  },
+  {
+    q:'Bạn muốn học một kỹ năng mới. Phương pháp nào là 20%?',
+    choices:[
+      { text:'Đọc 5 cuốn sách về kỹ năng đó trước khi bắt đầu', correct:false, explain:'Đây là 80% — chuẩn bị quá mức là cách trì hoãn tinh vi.' },
+      { text:'Tìm 1 người giỏi nhất trong lĩnh vực đó và học trực tiếp', correct:true, explain:'Đây là 20% — nguồn kiến thức tốt nhất + feedback trực tiếp = tiến bộ nhanh nhất.' },
+      { text:'Xem video YouTube 2 giờ/ngày trong 1 tháng', correct:false, explain:'Đây là 80% — tiêu thụ thụ động không = năng lực thực hành.' },
+      { text:'Ghi chú đầy đủ và tạo mindmap đẹp', correct:false, explain:'Đây là 80% — ghi chú đẹp là ảo tưởng về sự tiến bộ.' }
+    ]
+  },
+  {
+    q:'Danh sách to-do của bạn có 20 việc. Bạn làm gì?',
+    choices:[
+      { text:'Cố gắng hoàn thành tất cả 20 việc', correct:false, explain:'Đây là 80% — phân tán sức lực vào 20 hướng = không tiến triển thực sự ở đâu.' },
+      { text:'Chọn 2-3 việc quan trọng nhất, bỏ hoặc ủy quyền phần còn lại', correct:true, explain:'Đây là 20% — ít hơn nhưng tốt hơn. Chất lượng > số lượng.' },
+      { text:'Làm từ trên xuống theo thứ tự', correct:false, explain:'Đây là 80% — vị trí trên danh sách không = mức độ quan trọng thực sự.' },
+      { text:'Làm việc dễ nhất trước để tạo đà', correct:false, explain:'Đây là 80% — "tạo đà" bằng việc dễ thường là bẫy trì hoãn.' }
+    ]
+  },
+  {
+    q:'Bạn muốn tăng thu nhập. Đâu là hành động 20%?',
+    choices:[
+      { text:'Học thêm nhiều kỹ năng đa dạng', correct:false, explain:'Đây là 80% — rộng nhưng nông. Kỹ năng đa dạng không bằng 1 kỹ năng xuất sắc.' },
+      { text:'Nâng cao 1 kỹ năng cốt lõi đang tạo ra giá trị nhiều nhất', correct:true, explain:'Đây là 20% — deepening a skill đang cho tiền > spreading sang kỹ năng mới.' },
+      { text:'Làm thêm nhiều giờ hơn', correct:false, explain:'Đây là 80% — thời gian có hạn. Tăng giờ làm không phải chiến lược bền vững.' },
+      { text:'Tham gia nhiều hội nhóm networking', correct:false, explain:'Đây là 80% — số lượng kết nối không = chất lượng quan hệ tạo cơ hội.' }
+    ]
+  }
+];
+
+// --- Quiz ---
+const QUIZ = [
+  { q:'Theo nguyên lý Pareto, trong kinh doanh thông thường:', opts:['100% khách hàng đóng góp đều nhau','20% khách hàng tạo ra 80% doanh thu','50% khách hàng là trung thành','80% sản phẩm bán chạy như nhau'], ans:1, explain:'Đây là ứng dụng kinh điển của Pareto: 20% khách hàng (thường là khách VIP, khách quen) tạo ra phần lớn doanh thu. → Chiến lược: đầu tư mạnh vào 20% khách hàng này.' },
+  { q:'Bạn có 10 nhiệm vụ. Theo 80/20, bạn nên:', opts:['Làm tất cả 10 theo thứ tự','Làm 5 việc dễ trước rồi 5 việc khó','Xác định 2 việc tạo ra nhiều giá trị nhất và ưu tiên chúng','Ủy quyền tất cả'], ans:2, explain:'20% của 10 việc = 2 việc. Đây là 20% quan trọng tạo ra 80% kết quả. Làm 2 việc này trước, bỏ hoặc ủy quyền phần còn lại.' },
+  { q:'Đâu là ví dụ của "bận rộn giả" — hoạt động 80%?', opts:['Viết code cho tính năng cốt lõi','Gặp nhà đầu tư tiềm năng','Trả lời 50 email không liên quan đến mục tiêu','Đàm phán hợp đồng lớn'], ans:2, explain:'Trả lời email nhiều không = tiến triển thực sự. Đây là 80% — tạo cảm giác bận rộn nhưng không đưa bạn gần hơn đến mục tiêu.' },
+  { q:'Theo 80/20, nguồn năng lực nên được đầu tư vào:', opts:['Phân tán đều cho tất cả dự án','Tập trung vào 20% dự án tạo ra nhiều giá trị nhất','Dự án mới nhất','Dự án được yêu cầu nhiều nhất'], ans:1, explain:'Đây là nguyên tắc tập trung nguồn lực. 20% dự án đúng > 100% sức lực phân tán. Đây là 20% chiến lược.' },
+  { q:'Ma trận Eisenhower + 80/20: Ưu tiên cao nhất là gì?', opts:['Việc khẩn cấp nhưng không quan trọng','Việc không khẩn cấp và không quan trọng','Việc quan trọng và không khẩn cấp (deep work)','Việc khẩn cấp và quan trọng'], ans:2, explain:'Việc quan trọng-không khẩn cấp (deep work, chiến lược, học tập) là 20% thực sự. Việc khẩn cấp-quan trọng đã quá muộn để tối ưu — cần phòng ngừa từ trước.' },
+  { q:'Richard Koch áp dụng 80/20 vào cuộc sống như thế nào?', opts:['Làm việc nhiều hơn 80% thời gian','Loại bỏ 80% hoạt động kém hiệu quả, chỉ giữ 20% tạo ra hạnh phúc và kết quả','Chia đều thời gian cho tất cả mục tiêu','Tập trung 80% vào công việc, 20% vào nghỉ ngơi'], ans:1, explain:'Koch lập luận: nếu 20% hoạt động tạo ra 80% hạnh phúc và thành công, hãy xác định rõ 20% đó và đầu tư nhiều hơn vào đó, đồng thời cắt giảm 80% còn lại.' },
+  { q:'Đâu là chiến lược 20% khi học một ngôn ngữ mới?', opts:['Học thuộc từ điển từ A đến Z','Học 1000 từ thông dụng nhất (chiếm 80% hội thoại hàng ngày)','Học ngữ pháp nâng cao trước','Xem phim không phụ đề ngay từ đầu'], ans:1, explain:'1000 từ phổ biến nhất của bất kỳ ngôn ngữ nào chiếm ~80% lời nói hàng ngày. Đây là 20% nỗ lực tạo ra 80% khả năng giao tiếp. → Học từ vựng thông dụng trước.' },
+  { q:'Bạn có ngân sách hạn chế. Theo 80/20, chi tiêu vào đâu?', opts:['Phân bổ đều cho mọi danh mục','Đầu tư vào 1-2 kỹ năng hoặc tài sản tạo ra nhiều lợi nhuận nhất','Chi cho tất cả những thứ "có thể cần"','Tiết kiệm tất cả không đầu tư gì'], ans:1, explain:'Đây là 20% đầu tư thông minh. Phân bổ đều = không đủ vốn để tạo kết quả ở bất kỳ đâu. Tập trung vào 1-2 "kênh" mạnh nhất = đòn bẩy tài chính.' }
+];
+
+// --- Flashcards ---
+const CARDS = [
+  { front:'Bạn có 3 dự án. Một dự án mang lại 70% doanh thu. Nên làm gì?', back:'Tập trung 80% nguồn lực vào dự án đó', reason:'20% dự án đúng = 80% kết quả. Đây là tư duy Pareto thuần túy.' },
+  { front:'Danh sách to-do 15 việc. Nên làm bao nhiêu?', back:'Chọn đúng 3 việc quan trọng nhất', reason:'3/15 ≈ 20%. Làm ít hơn nhưng đúng hơn = kết quả tốt hơn.' },
+  { front:'Bạn có 100 khách hàng. 20 người mua nhiều nhất. Chiến lược?', back:'Chăm sóc đặc biệt 20 khách hàng VIP đó', reason:'20% khách hàng = 80% doanh thu. Đầu tư vào quan hệ này trước.' },
+  { front:'Sáng thứ Hai. Inbox 80 email chưa đọc. Làm gì đầu tiên?', back:'Làm việc 20% quan trọng nhất TRƯỚC khi mở email', reason:'Email = agenda của người khác, không phải ưu tiên của bạn. Bảo vệ giờ vàng buổi sáng.' },
+  { front:'Bạn muốn khỏe mạnh hơn. 1 thay đổi duy nhất là gì?', back:'Ngủ đủ 7-8 giờ và tập thể dục 3x/tuần', reason:'2 thói quen này là 20% hành vi sức khỏe tạo ra 80% cải thiện thể chất và tư duy.' },
+  { front:'Học kỹ năng mới: đọc sách hay luyện tập thực hành?', back:'70% thời gian luyện tập thực hành', reason:'Thực hành là 20% phương pháp tạo ra 80% năng lực thực sự. Đọc là 80% tiêu thụ, ít chuyển hóa thành kỹ năng.' },
+  { front:'Họp 2 tiếng không quyết định được gì. Lần sau nên làm gì?', back:'Đặt agenda rõ ràng + thời gian max 45 phút + phải ra quyết định', reason:'Parkinson Law: công việc mở rộng đến hết thời gian cho phép. Cắt ngắn thời gian = tập trung vào 20% nội dung quan trọng.' },
+  { front:'Bạn có 500 kết nối LinkedIn. Ai là 20% quan trọng?', back:'5-10 người có thể thực sự ảnh hưởng đến sự nghiệp bạn', reason:'Quan hệ thực chất > số lượng. Đầu tư thời gian chất lượng với 20% này.' },
+  { front:'Muốn tăng thu nhập nhanh nhất. Nên làm gì?', back:'Nâng cao giá trị của kỹ năng cốt lõi bạn đang có', reason:'Kỹ năng bạn đã có là 20% đầu tư ít nhất nhưng lợi nhuận biên cao nhất. Đây là vùng 20% của bạn.' },
+  { front:'Cảm thấy bận rộn cả ngày nhưng không tiến triển. Vấn đề là gì?', back:'Đang làm 80% việc urgent thay vì 20% việc important', reason:'Urgent ≠ Important. Bận rộn là 80%. Tiến triển thực sự đến từ làm đúng 20% việc quan trọng.' }
+];
+
+// --- Mistakes ---
+const MISTAKES = [
+  { title:'1. Bận rộn giả (Fake Busy)', desc:'Cảm giác bận rộn suốt ngày nhưng không tiến về phía mục tiêu. Lịch kín mít, inbox đầy, họp liên tục — đây là dấu hiệu bạn đang sống trong vùng 80%.', fix:'Cuối ngày, hỏi: "Tôi đã làm được gì thuộc 20% quan trọng?" Nếu câu trả lời trống — ngày mai thiết kế lại.' },
+  { title:'2. Không dám từ bỏ (Sunk Cost Trap)', desc:'Tiếp tục đầu tư thời gian vào dự án, quan hệ, hay thói quen không hiệu quả vì "đã đầu tư quá nhiều rồi". Đây là 80% chiếm chỗ của 20%.', fix:'Chi phí chìm đã mất rồi. Câu hỏi đúng là: "Nếu bắt đầu lại từ đầu, tôi có chọn cái này không?" Nếu không — dừng lại.' },
+  { title:'3. Bị Urgent đánh lừa', desc:'Nhầm lẫn giữa khẩn cấp (urgent) và quan trọng (important). Phản hồi ngay mọi tin nhắn, cuộc gọi, yêu cầu — sống trong chế độ firefighting là sống trong vùng 80%.', fix:'Dùng ma trận Eisenhower. Việc quan trọng-không khẩn cấp là 20% thực sự. Lên lịch cho nó trước khi ngày bắt đầu.' },
+  { title:'4. Cầu toàn (Perfectionism)', desc:'Dành 80% thời gian để làm 20% cuối cùng của một sản phẩm "hoàn hảo". Luật lợi nhuận giảm dần: nỗ lực tăng mãi nhưng giá trị tăng thêm ngày càng nhỏ.', fix:'"Done is better than perfect." Hoàn thành 80% tốt và ra mắt tạo ra nhiều giá trị hơn chờ đợi 100% hoàn hảo.' },
+  { title:'5. Đa nhiệm (Multitasking)', desc:'Làm nhiều việc cùng lúc tạo ảo giác hiệu quả. Thực chất, não chỉ chuyển nhanh giữa các việc, mất 23 phút để khôi phục tập trung sau mỗi lần ngắt.', fix:'Một việc, một thời gian. Deep work blocks 90 phút không ngắt quãng là 20% thời gian tạo ra 80% output chất lượng.' },
+  { title:'6. Thu thập thông tin thay vì hành động', desc:'Đọc 10 cuốn sách, xem 50 video, lưu 200 bài viết — nhưng không thực hành. "Biết" không bằng "làm". Đây là 80% tiêu thụ, 20% thực hành mới tạo ra thay đổi.', fix:'Quy tắc 20%: với mỗi 1 giờ học lý thuyết, dành ít nhất 4 giờ thực hành. Hành động sớm, thậm chí chưa "sẵn sàng".' },
+  { title:'7. Nói "Có" với mọi thứ', desc:'Không biết từ chối = để người khác xác định 80% lịch của bạn. Mỗi lần nói "Có" với yêu cầu của người khác = nói "Không" với ưu tiên của mình.', fix:'"Không" là công cụ 80/20 mạnh nhất. Trước khi đồng ý, hỏi: "Việc này có thuộc 20% quan trọng của tôi không?" Nếu không — từ chối lịch sự.' }
+];
+
+/* ======================================== */
+/* NAVIGATION                               */
+/* ======================================== */
+document.querySelectorAll('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const sec = btn.dataset.sec;
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('sec-' + sec).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (sec === 'daily') loadDaily();
+  });
+});
+
+/* ======================================== */
+/* SECTION 2: DIAGNOSTIC                   */
+/* ======================================== */
+function runDiagnostic() {
+  const tasks = ['t1','t2','t3','t4','t5'].map(id => document.getElementById(id).value.trim()).filter(Boolean);
+  const goals = ['g1','g2','g3','g4','g5'].map(id => document.getElementById(id).value.trim()).filter(Boolean);
+  if (tasks.length === 0 && goals.length === 0) {
+    alert('Vui lòng nhập ít nhất 1 việc đang làm hoặc 1 mục tiêu.');
+    return;
+  }
+  // Simple heuristic: tasks with goal-related keywords → 20%, others → 80%
+  const goalKeywords = goals.map(g => g.toLowerCase().split(/[\s,]/)).flat().filter(w => w.length > 3);
+  const keep = [], drop = [];
+  tasks.forEach(t => {
+    const tl = t.toLowerCase();
+    const match = goalKeywords.some(kw => tl.includes(kw));
+    // Also classify by common 80% patterns
+    const is80 = /email|mạng xã hội|facebook|zalo|họp|meeting|dọn|report|báo cáo|scroll|lướt|chat/.test(tl);
+    if (match && !is80) keep.push(t);
+    else drop.push(t);
+  });
+  // Ensure at least 1 in each
+  if (keep.length === 0 && drop.length > 0) { keep.push(drop.pop()); }
+
+  const k20 = document.getElementById('keep20');
+  const d80 = document.getElementById('drop80');
+  k20.innerHTML = keep.map(t => `<div class="result-item">✅ <span>${t}</span></div>`).join('') || '<div class="result-item" style="color:var(--muted)">Hãy nhập thêm việc liên quan đến mục tiêu</div>';
+  d80.innerHTML = drop.map(t => `<div class="result-item">🗑️ <span>${t}</span></div>`).join('') || '<div class="result-item" style="color:var(--muted)">Không có việc nào cần loại bỏ (tốt lắm!)</div>';
+
+  const g = document.getElementById('diagAction');
+  const topGoal = goals[0] || 'mục tiêu của bạn';
+  g.innerHTML = `
+    <strong>Bước 1:</strong> Loại bỏ hoặc ủy quyền: <em>${drop.slice(0,2).join(', ') || '...'}</em><br>
+    <strong>Bước 2:</strong> Dành toàn bộ năng lượng vào: <em>${keep.slice(0,2).join(', ') || '...'}</em><br>
+    <strong>Bước 3:</strong> Hỏi mỗi ngày: "Việc này có đưa tôi gần hơn đến <em>${topGoal}</em> không?"
+  `;
+  const r = document.getElementById('diagResult');
+  r.classList.add('show');
+  r.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function clearDiagnostic() {
+  ['t1','t2','t3','t4','t5','g1','g2','g3','g4','g5'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('diagResult').classList.remove('show');
+}
+
+/* ======================================== */
+/* SECTION 3: ACTIONS                      */
+/* ======================================== */
+function loadActions() {
+  const done = JSON.parse(localStorage.getItem('actions_done') || '{}');
+  const list = document.getElementById('actionList');
+  list.innerHTML = ACTIONS.map(a => `
+    <div class="action-item ${done[a.id]?'done':''}" id="ai-${a.id}" onclick="toggleAction('${a.id}')">
+      <div class="action-cb" id="cb-${a.id}">${done[a.id]?'<svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/></svg>':''}</div>
+      <div class="action-text">
+        <h4>${a.title}</h4>
+        <p>${a.note}</p>
+        <div class="timer-tag">⏱ ${a.time} · <span class="badge badge-20" style="font-size:.65rem">${a.tag}</span></div>
+      </div>
+    </div>
+  `).join('');
+  updateActionProgress(done);
+}
+
+function toggleAction(id) {
+  const done = JSON.parse(localStorage.getItem('actions_done') || '{}');
+  done[id] = !done[id];
+  localStorage.setItem('actions_done', JSON.stringify(done));
+  loadActions();
+}
+
+function resetActions() {
+  localStorage.removeItem('actions_done');
+  loadActions();
+}
+
+function updateActionProgress(done) {
+  const count = Object.values(done).filter(Boolean).length;
+  document.getElementById('actionProgress').textContent = `Hoàn thành: ${count}/${ACTIONS.length} hành động`;
+}
+
+/* ======================================== */
+/* SECTION 4: DECISIONS                    */
+/* ======================================== */
+let decIdx = 0, decCorrect = 0, decWrong = 0;
+const shuffledScenarios = [...SCENARIOS].sort(() => Math.random() - .5);
+
+function loadNextScenario() {
+  document.getElementById('decNextBtn').style.display = 'none';
+  if (decIdx >= shuffledScenarios.length) decIdx = 0;
+  renderScenario(shuffledScenarios[decIdx++]);
+}
+
+function renderScenario(s) {
+  const c = document.getElementById('decContainer');
+  c.innerHTML = `
+    <div class="scenario-card">
+      <h3>📌 ${s.q}</h3>
+      <div class="choice-list" id="choiceList">
+        ${s.choices.map((ch,i) => `<button class="choice-btn" onclick="chooseDecision(${i})">${ch.text}</button>`).join('')}
+      </div>
+      <div class="feedback-box" id="decFeedback"></div>
+    </div>
+  `;
+  c._scenario = s;
+  c.style.animation = 'none'; void c.offsetWidth; c.style.animation = 'fadeIn .3s ease';
+}
+
+function chooseDecision(idx) {
+  const c = document.getElementById('decContainer');
+  const s = c._scenario;
+  const chosen = s.choices[idx];
+  const btns = document.querySelectorAll('.choice-btn');
+  btns.forEach((b,i) => {
+    b.disabled = true;
+    if (s.choices[i].correct) b.classList.add('correct');
+    else if (i === idx && !chosen.correct) b.classList.add('wrong');
+    else b.classList.add('neutral');
+  });
+  const fb = document.getElementById('decFeedback');
+  fb.className = `feedback-box show ${chosen.correct?'ok':'no'}`;
+  fb.innerHTML = `<strong>${chosen.correct ? '✅ Đúng rồi!' : '❌ Chưa đúng!'}</strong> — ${chosen.explain}`;
+  if (chosen.correct) decCorrect++; else decWrong++;
+  const t = ++decWrong + decCorrect - (chosen.correct ? 0 : 0);
+  // Recalc
+  document.getElementById('decCorrect').textContent = decCorrect;
+  document.getElementById('decWrong').textContent = decWrong - (chosen.correct ? 0 : 0);
+  document.getElementById('decTotal').textContent = decIdx;
+  updateDecScore();
+  document.getElementById('decNextBtn').style.display = 'inline-flex';
+}
+
+function updateDecScore() {
+  document.getElementById('decCorrect').textContent = decCorrect;
+  document.getElementById('decWrong').textContent = decWrong;
+  document.getElementById('decTotal').textContent = decIdx;
+}
+
+/* ======================================== */
+/* SECTION 5: QUIZ                         */
+/* ======================================== */
+let qIdx = 0, qScore = 0, qAnswered = false;
+const shuffledQuiz = [...QUIZ].sort(() => Math.random() - .5);
+
+function renderQuiz() {
+  const q = shuffledQuiz[qIdx];
+  document.getElementById('quizQ').textContent = q.q;
+  document.getElementById('quizCounter').textContent = `Câu ${qIdx+1} / ${shuffledQuiz.length}`;
+  document.getElementById('quizBar').style.width = `${(qIdx/shuffledQuiz.length)*100}%`;
+  const opts = document.getElementById('quizOpts');
+  opts.innerHTML = q.opts.map((o,i) => `<button class="quiz-opt" onclick="answerQuiz(${i})">${o}</button>`).join('');
+  document.getElementById('quizExplain').classList.remove('show');
+  document.getElementById('quizNextBtn').style.display = 'none';
+  document.getElementById('quizResult').style.display = 'none';
+  document.getElementById('quizQ').style.display = '';
+  opts.style.display = '';
+  qAnswered = false;
+}
+
+function answerQuiz(idx) {
+  if (qAnswered) return;
+  qAnswered = true;
+  const q = shuffledQuiz[qIdx];
+  document.querySelectorAll('.quiz-opt').forEach((b,i) => {
+    b.disabled = true;
+    if (i === q.ans) b.classList.add('correct');
+    else if (i === idx) b.classList.add('wrong');
+    else b.classList.add('reveal');
+  });
+  if (idx === q.ans) qScore++;
+  const ex = document.getElementById('quizExplain');
+  ex.innerHTML = `<strong>${idx===q.ans?'✅ Chính xác!':'❌ Chưa đúng.'}</strong> — ${q.explain}`;
+  ex.classList.add('show');
+  document.getElementById('quizNextBtn').style.display = 'inline-flex';
+}
+
+function nextQuiz() {
+  qIdx++;
+  if (qIdx >= shuffledQuiz.length) {
+    showQuizResult();
+  } else {
+    renderQuiz();
+  }
+}
+
+function showQuizResult() {
+  document.getElementById('quizQ').style.display = 'none';
+  document.getElementById('quizOpts').style.display = 'none';
+  document.getElementById('quizExplain').classList.remove('show');
+  document.getElementById('quizNextBtn').style.display = 'none';
+  document.getElementById('quizBar').style.width = '100%';
+  const pct = Math.round((qScore/shuffledQuiz.length)*100);
+  document.getElementById('quizScore').textContent = `${qScore}/${shuffledQuiz.length}`;
+  let msg = '';
+  if (pct >= 80) msg = '🏆 Xuất sắc! Bạn đã nắm vững tư duy 80/20.';
+  else if (pct >= 60) msg = '💪 Tốt! Ôn lại phần sai để tư duy Pareto sắc bén hơn.';
+  else msg = '📚 Hãy quay lại Core Insights và thử lại. Bạn sẽ làm tốt hơn!';
+  document.getElementById('quizMsg').textContent = msg;
+  document.getElementById('quizResult').style.display = 'block';
+}
+
+function restartQuiz() {
+  qIdx = 0; qScore = 0;
+  shuffledQuiz.sort(() => Math.random() - .5);
+  renderQuiz();
+}
+
+/* ======================================== */
+/* SECTION 6: FLASHCARDS                   */
+/* ======================================== */
+let fcIdx = 0, fcFlipped = false;
+
+function renderCard() {
+  const c = CARDS[fcIdx];
+  document.getElementById('fcFront').textContent = c.front;
+  document.getElementById('fcBack').textContent = c.back;
+  document.getElementById('fcReason').textContent = c.reason;
+  document.getElementById('fcNum').textContent = `${fcIdx+1} / ${CARDS.length}`;
+  document.getElementById('fcCount').textContent = `${fcIdx+1}/${CARDS.length}`;
+  const fc = document.getElementById('fcCard');
+  fc.classList.remove('flipped');
+  fcFlipped = false;
+}
+
+function flipCard() {
+  const fc = document.getElementById('fcCard');
+  fcFlipped = !fcFlipped;
+  fc.classList.toggle('flipped', fcFlipped);
+}
+
+function nextCard() {
+  fcIdx = (fcIdx + 1) % CARDS.length;
+  renderCard();
+}
+
+function prevCard() {
+  fcIdx = (fcIdx - 1 + CARDS.length) % CARDS.length;
+  renderCard();
+}
+
+/* ======================================== */
+/* SECTION 7: MISTAKES                     */
+/* ======================================== */
+function loadMistakes() {
+  document.getElementById('mistakesContainer').innerHTML = MISTAKES.map(m => `
+    <div class="mistake-card">
+      <h3>${m.title}</h3>
+      <p class="desc">${m.desc}</p>
+      <div class="fix">${m.fix}</div>
+    </div>
+    ${MISTAKES.indexOf(m) < MISTAKES.length-1 ? '<div class="divider"></div>' : ''}
+  `).join('');
+}
+
+/* ======================================== */
+/* SECTION 8: DAILY FOCUS                  */
+/* ======================================== */
+function saveDaily() {
+  const data = {
+    top: document.getElementById('topTask').value,
+    d1: document.getElementById('drop1').value,
+    d2: document.getElementById('drop2').value,
+    d3: document.getElementById('drop3').value,
+    date: new Date().toDateString()
+  };
+  localStorage.setItem('daily_focus', JSON.stringify(data));
+  renderDailyPreview(data);
+}
+
+function loadDaily() {
+  const saved = localStorage.getItem('daily_focus');
+  if (!saved) return;
+  const data = JSON.parse(saved);
+  document.getElementById('topTask').value = data.top || '';
+  document.getElementById('drop1').value = data.d1 || '';
+  document.getElementById('drop2').value = data.d2 || '';
+  document.getElementById('drop3').value = data.d3 || '';
+  renderDailyPreview(data);
+}
+
+function renderDailyPreview(data) {
+  const prev = document.getElementById('topTaskPreview');
+  if (data.top) {
+    prev.textContent = '🎯 ' + data.top;
+    prev.classList.remove('empty');
+  } else {
+    prev.textContent = 'Chưa có việc quan trọng nào...';
+    prev.classList.add('empty');
+  }
+  const drops = [data.d1, data.d2, data.d3].filter(Boolean);
+  const dp = document.getElementById('dropPreview');
+  if (drops.length) {
+    dp.innerHTML = drops.map(d => `<div class="drop-item">🗑️ ${d}</div>`).join('');
+  } else {
+    dp.innerHTML = '<div class="drop-item empty">Chưa có việc nào cần loại bỏ...</div>';
+  }
+  const tag = document.getElementById('checkTag');
+  const has20 = !!data.top;
+  const has80 = drops.length > 0;
+  if (has20 && has80) {
+    tag.style.background = 'var(--green-light)';
+    tag.style.borderColor = '#86efac';
+    tag.style.color = 'var(--green)';
+    tag.textContent = '✅ Bạn đang tập trung vào 20% đúng đắn!';
+  } else if (has20) {
+    tag.style.background = 'var(--yellow-light)';
+    tag.style.borderColor = '#fde047';
+    tag.style.color = 'var(--yellow)';
+    tag.textContent = '⚡ Tốt! Hãy xác định thêm việc 80% cần loại bỏ.';
+  } else {
+    tag.style.background = 'var(--yellow-light)';
+    tag.style.borderColor = '#fde047';
+    tag.style.color = 'var(--yellow)';
+    tag.textContent = '⚡ Bạn đang làm 20% hay 80%?';
+  }
+}
+
+function clearDaily() {
+  ['topTask','drop1','drop2','drop3'].forEach(id => document.getElementById(id).value = '');
+  localStorage.removeItem('daily_focus');
+  renderDailyPreview({});
+}
+
+/* ======================================== */
+/* INIT                                     */
+/* ======================================== */
+function init() {
+  // Actions
+  loadActions();
+  // Decision
+  loadNextScenario();
+  // Quiz
+  renderQuiz();
+  // Flashcard
+  renderCard();
+  // Mistakes
+  loadMistakes();
+  // Daily
+  loadDaily();
+  // Fix decision score tracking
+  decCorrect = 0; decWrong = 0; decIdx = 0;
+  updateDecScore();
+  loadNextScenario();
+}
+
+// Override updateDecScore to be accurate
+function chooseDecision(idx) {
+  const c = document.getElementById('decContainer');
+  const s = c._scenario;
+  const chosen = s.choices[idx];
+  const btns = document.querySelectorAll('.choice-btn');
+  btns.forEach((b,i) => {
+    b.disabled = true;
+    if (s.choices[i].correct) b.classList.add('correct');
+    else if (i === idx && !chosen.correct) b.classList.add('wrong');
+    else b.classList.add('neutral');
+  });
+  const fb = document.getElementById('decFeedback');
+  fb.className = `feedback-box show ${chosen.correct?'ok':'no'}`;
+  fb.innerHTML = `<strong>${chosen.correct ? '✅ Đúng rồi!' : '❌ Chưa đúng!'}</strong><br>${chosen.explain}`;
+  if (chosen.correct) decCorrect++; else decWrong++;
+  document.getElementById('decCorrect').textContent = decCorrect;
+  document.getElementById('decWrong').textContent = decWrong;
+  document.getElementById('decTotal').textContent = decCorrect + decWrong;
+  document.getElementById('decNextBtn').style.display = 'inline-flex';
+}
+
+window.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
